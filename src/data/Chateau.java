@@ -59,12 +59,12 @@ public class Chateau {
 
     // Méthode privée d'incrémentation des ressources
     private void incrementerRessources() {
-        ressources++ ;
+        ressources += RESSOURCES_AJOUTEES_PAR_TOUR ;
     }
 
     // Méthode d'entrainement des guerriers
     public ArrayList<Guerrier> entrainer() {
-        LOGGER.log(Level.INFO, "Nombre de guerriers à entrainer : " + guerriersNovices.size() + ", ressources disponibles : " + ressources) ;
+        LOGGER.log(Level.INFO, "Nombre de guerriers restant à entrainer : " + guerriersNovices.size() + ", ressources disponibles : " + ressources) ;
         ArrayList<Guerrier> guerriersEntraines = new ArrayList<>() ;
         int numGuerrierCourant = 0 ;
         // Tant que l'on possède des guerriers et que l'on dispose de ressources pour les entrainer
@@ -80,7 +80,8 @@ public class Chateau {
             guerriersNovices.remove(guerrierCourant) ;
             LOGGER.log(Level.INFO, "Entrainement du guerrier " + numGuerrierCourant + ", ressources prises : " + coutGuerrierCourant) ;
         }
-        LOGGER.log(Level.INFO, "Nombre de guerriers entrainés : " + numGuerrierCourant) ;
+        LOGGER.log(Level.INFO, "Nombre de guerriers entrainés : " + numGuerrierCourant + ", ressources restantes : " + ressources) ;
+        incrementerRessources() ;
         return guerriersEntraines ;
     }
 }

@@ -2,8 +2,18 @@ package test ;
 
 import data.* ;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 
 public class TestEtape2 {
+
+    // Logger et configuration
+    private static Logger LOGGER = Logger.getLogger(TestEtape1.class.getPackageName());
+    static {
+        System.setProperty("java.util.logging.SimpleFormatter.format", "[%1$s] %4$-10s | (%3$s) %2$-15s | %5$s\n");
+        LOGGER.setLevel(Level.INFO);
+    }
 
     // Main
     public static void main (String[] args) {
@@ -18,6 +28,11 @@ public class TestEtape2 {
         Guerrier guerrier4 = new Elfe() ; chateau.ajoutGuerrierNovice(guerrier4) ;
 
         // Entrainement des guerriers
-        chateau.entrainer() ;
+        int tour_de_jeu = 1 ;
+        while (!chateau.getGuerriersNovices().isEmpty()) {
+            LOGGER.log(Level.INFO, "Tour de jeu n°" + tour_de_jeu) ;
+            chateau.entrainer() ;
+            tour_de_jeu++ ;
+        }
     }
 }
