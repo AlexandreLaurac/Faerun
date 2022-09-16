@@ -22,12 +22,14 @@ public class Chateau {
     // Attributs
     private int ressources ;
     private final Couleur couleur ;
+    private Plateau plateau ;
     private ArrayList<Guerrier> guerriersNovices ;
 
     // Constructeur
-    public Chateau (Couleur couleur) {
+    public Chateau (Couleur couleur, Plateau plateau) {  // A VERIFIER POUR LE PLATEAU
         ressources = RESSOURCES_INITIALES ;
         this.couleur = couleur ;
+        this.plateau = plateau ;
         guerriersNovices = new ArrayList<> () ;
     }
 
