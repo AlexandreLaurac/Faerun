@@ -108,10 +108,8 @@ public class Plateau {
     public void deplaceGuerriers (ArrayList<Guerrier> listeGuerriersEntraines) { // Deuxième version : guerriers du chateau rouge à déplacer
                                                                                  // présence de l'argument à revoir : utiliser plutôt la méthode ajoutGuerriers avec emploi éventuel d'attributs supplémentaires
         // Déclarations
-        Carreau carreauCourant ;
-        Carreau carreauSuivant ;
-        ArrayList<Guerrier> guerriersRougeCourant ;
-        ArrayList<Guerrier> guerriersRougeSuivant ;
+        Carreau carreauCourant, carreauSuivant ;
+        ArrayList<Guerrier> guerriersRougeCourant, guerriersRougeSuivant ;
 
         // Traitement des n-1 premiers carreaux
         for (int i = 0 ; i < nbCarreaux-1 ; i++) {
@@ -145,7 +143,7 @@ public class Plateau {
 
             // Affichage de l'état du carreau en fin de déplacement le concernant
             if (!guerriersRougeCourant.isEmpty()) {
-                LOGGER.log(Level.INFO, "\tEtat du carreau " + Integer.toString(nbCarreaux-1) + " : présence de " + guerriersRougeCourant.size() + " guerriers") ;
+                LOGGER.log(Level.INFO, "\tEtat du carreau " + (nbCarreaux-1) + " : présence de " + guerriersRougeCourant.size() + " guerriers") ;
             }
         }
     }

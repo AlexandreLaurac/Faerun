@@ -6,10 +6,10 @@ import java.util.ArrayList ;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class TestEtape3 {
+public class TestEtape3Deplacements {
 
     // Logger et configuration
-    private static Logger LOGGER = Logger.getLogger(TestEtape3.class.getPackageName());
+    private static Logger LOGGER = Logger.getLogger(TestEtape3Deplacements.class.getPackageName());
     static {
         System.setProperty("java.util.logging.SimpleFormatter.format", "[%1$s] %4$-10s | (%3$s) %2$-15s | %5$s\n") ;
         LOGGER.setLevel(Level.INFO) ;
@@ -35,7 +35,6 @@ public class TestEtape3 {
         Guerrier guerrier6 = new Nain() ;     listeGuerriersSuppl.add(guerrier6) ;
         Guerrier guerrier7 = new ChefNain() ; listeGuerriersSuppl.add(guerrier7) ;
 
-        // Lancement du déplacement
 
         // Tests pour la première version du déplacement (guerriers bleus)
 /*
