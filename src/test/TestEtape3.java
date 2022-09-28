@@ -22,7 +22,7 @@ public class TestEtape3 {
         // Pas besoin donc de créer un chateau et d'entrainer des guerriers : on crée des guerriers qu'on soumet directement au plateau
 
         // Initialisations
-        int nbCarreauxTest = 20 ;
+        int nbCarreauxTest = 10 ;
         Plateau plateauDeJeu = new Plateau (nbCarreauxTest) ;
         ArrayList<Guerrier> listeGuerriers = new ArrayList<>() ;
         Guerrier guerrier1 = new Elfe() ;     listeGuerriers.add(guerrier1) ;
@@ -36,6 +36,9 @@ public class TestEtape3 {
         Guerrier guerrier7 = new ChefNain() ; listeGuerriersSuppl.add(guerrier7) ;
 
         // Lancement du déplacement
+
+        // Tests pour la première version du déplacement (guerriers bleus)
+/*
         int tourDeJeu = 1 ;
         boolean dernierCarreauVide = plateauDeJeu.getCarreaux().get(nbCarreauxTest-1).getGuerriersBleus().isEmpty() ;
         while (dernierCarreauVide) {
@@ -46,6 +49,21 @@ public class TestEtape3 {
             plateauDeJeu.deplaceGuerriers(listeGuerriers) ;
             tourDeJeu++ ;
             dernierCarreauVide = plateauDeJeu.getCarreaux().get(nbCarreauxTest-1).getGuerriersBleus().isEmpty() ;
+        }
+*/
+
+        // Tests pour la deuxième version du déplacement (guerriers rouges)
+        int tourDeJeu = 1 ;
+        boolean premierCarreauVide = plateauDeJeu.getCarreaux().get(0).getGuerriersRouges().isEmpty() ;
+        while (premierCarreauVide) {
+            LOGGER.log(Level.INFO, "Tour de jeu n°" + tourDeJeu + ". Etat des carreaux :") ;
+            if (tourDeJeu == 3) {
+                listeGuerriers = listeGuerriersSuppl ;
+            }
+            plateauDeJeu.deplaceGuerriers(listeGuerriers) ;
+
+            premierCarreauVide = plateauDeJeu.getCarreaux().get(0).getGuerriersRouges().isEmpty() ;
+            tourDeJeu++ ;
         }
     }
 }

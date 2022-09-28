@@ -66,6 +66,7 @@ public class Plateau {
 
     }
 
+    /*
     public void deplaceGuerriers (ArrayList<Guerrier> listeGuerriersEntraines) { // Première version : guerriers d'un seul chateau à déplacer (le bleu)
                                                                                  // présence de l'argument à revoir : utiliser plutôt la méthode ajoutGuerriers avec emploi éventuel d'attributs supplémentaires
             ArrayList<Guerrier> listeAttenteEntree = listeGuerriersEntraines ;
@@ -73,6 +74,7 @@ public class Plateau {
 
             // Traitement des différents carreaux
             for (int i = 0 ; i < nbCarreaux ; i++) {
+
                 // Initialisations
                 Carreau carreauCourant = carreaux.get(i) ;
                 ArrayList<Guerrier> guerriersBleus = carreauCourant.getGuerriersBleus() ;
@@ -82,6 +84,7 @@ public class Plateau {
                     listeAttenteSortie.addAll(guerriersBleus) ;
                     guerriersBleus.clear() ;
                 }
+
                 // S'il exite des guerriers en attente pour entrer sur le carreau, on les ajoute à celui-ci (et on vide la liste d'attente en entrée)
                 if (!listeAttenteEntree.isEmpty()) {
                     guerriersBleus.addAll(listeAttenteEntree) ;
@@ -99,11 +102,55 @@ public class Plateau {
                     LOGGER.log(Level.INFO, "\tEtat du carreau " + i + " : présence de " + guerriersBleus.size() + " guerriers") ;
                 }
             }
+        }
+*/
 
+    public void deplaceGuerriers (ArrayList<Guerrier> listeGuerriersEntraines) { // Deuxième version : guerriers du chateau rouge à déplacer
+                                                                                 // présence de l'argument à revoir : utiliser plutôt la méthode ajoutGuerriers avec emploi éventuel d'attributs supplémentaires
+        // Déclarations
+        Carreau carreauCourant ;
+        Carreau carreauSuivant ;
+        ArrayList<Guerrier> guerriersRougeCourant ;
+        ArrayList<Guerrier> guerriersRougeSuivant ;
+
+        // Traitement des n-1 premiers carreaux
+        for (int i = 0 ; i < nbCarreaux-1 ; i++) {
+
+            // Initialisations
+            carreauCourant = carreaux.get(i) ;
+            carreauSuivant = carreaux.get(i+1) ;
+            guerriersRougeCourant = carreauCourant.getGuerriersRouges() ;
+            guerriersRougeSuivant = carreauSuivant.getGuerriersRouges() ;
+
+            // Le carreau courant est vide, si le carreau suivant contient des guerriers on les déplace dans le carreau courant
+            if (!guerriersRougeSuivant.isEmpty()) {
+                guerriersRougeCourant.addAll(guerriersRougeSuivant) ;
+                guerriersRougeSuivant.clear() ;
+            }
+
+            // Affichage de l'état du carreau en fin de déplacement le concernant
+            if (!guerriersRougeCourant.isEmpty()) {
+                LOGGER.log(Level.INFO, "\tEtat du carreau " + i + " : présence de " + guerriersRougeCourant.size() + " guerriers") ;
+            }
         }
 
+        // Traitement du dernier carreau
+        if (!listeGuerriersEntraines.isEmpty()) {
 
-        // Méthodes concernant le combat
+            // Initialisations
+            carreauCourant = carreaux.get(nbCarreaux-1) ;
+            guerriersRougeCourant = carreauCourant.getGuerriersRouges() ;
+            guerriersRougeCourant.addAll (listeGuerriersEntraines) ;
+            listeGuerriersEntraines.clear() ;  // pas très propre...
+
+            // Affichage de l'état du carreau en fin de déplacement le concernant
+            if (!guerriersRougeCourant.isEmpty()) {
+                LOGGER.log(Level.INFO, "\tEtat du carreau " + Integer.toString(nbCarreaux-1) + " : présence de " + guerriersRougeCourant.size() + " guerriers") ;
+            }
+        }
+    }
+
+    // Méthodes concernant le combat
     public void lanceCombats() {
 
     }
