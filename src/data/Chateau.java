@@ -11,9 +11,9 @@ public class Chateau {
     // Constantes
     public static final int RESSOURCES_INITIALES = 3 ;
     public static final int RESSOURCES_AJOUTEES_PAR_TOUR = 1 ;
-    private static Logger LOGGER = Logger.getLogger(Chateau.class.getPackageName());
 
     // Configuration du logger
+    private static Logger LOGGER = Logger.getLogger(Chateau.class.getPackageName());
     static {
         System.setProperty("java.util.logging.SimpleFormatter.format", "[%1$s] %4$-10s | (%3$s) %2$-15s | %5$s\n");
         LOGGER.setLevel(Level.INFO);

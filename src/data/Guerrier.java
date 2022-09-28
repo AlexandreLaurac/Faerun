@@ -12,9 +12,9 @@ public abstract class Guerrier {
     public static final int FORCE_BASE = 10 ;
     public static final int POINTS_DE_VIE_MAX = 100 ;
     public static final int COUT_BASE = 1 ;
-    private static Logger LOGGER = Logger.getLogger(Guerrier.class.getPackageName());
 
     // Configuration du logger
+    private static Logger LOGGER = Logger.getLogger(Guerrier.class.getPackageName());
     static {
         System.setProperty("java.util.logging.SimpleFormatter.format", "[%1$s] %4$-10s | (%3$s) %2$-15s | %5$s\n");
         LOGGER.setLevel(Level.INFO);
