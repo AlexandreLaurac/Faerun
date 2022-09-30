@@ -21,48 +21,62 @@ public class TestEtape3Deplacements {
         // ATTENTION : ici on ne teste que le déplacement, indépendemment de l'entrainement des guerriers
         // Pas besoin donc de créer un chateau et d'entrainer des guerriers : on crée des guerriers qu'on soumet directement au plateau
 
-        // Initialisations
+        //---------------------------------------------- Initialisations ---------------------------------------------//
+
+        // Plateau
         int nbCarreauxTest = 10 ;
         Plateau plateauDeJeu = new Plateau (nbCarreauxTest) ;
+
+        // Guerriers bleus
+          // Premier groupe
         ArrayList<Guerrier> listeGuerriers = new ArrayList<>() ;
         Guerrier guerrier1 = new Elfe() ;     listeGuerriers.add(guerrier1) ;
         Guerrier guerrier2 = new Nain() ;     listeGuerriers.add(guerrier2) ;
         Guerrier guerrier3 = new ChefNain() ; listeGuerriers.add(guerrier3) ;
         Guerrier guerrier4 = new ChefElfe() ; listeGuerriers.add(guerrier4) ;
-
+          // Deuxième groupe
         ArrayList<Guerrier> listeGuerriersSuppl = new ArrayList<>() ;
         Guerrier guerrier5 = new Elfe() ;     listeGuerriersSuppl.add(guerrier5) ;
         Guerrier guerrier6 = new Nain() ;     listeGuerriersSuppl.add(guerrier6) ;
         Guerrier guerrier7 = new ChefNain() ; listeGuerriersSuppl.add(guerrier7) ;
 
+        // Guerriers rouges
+          // Premier groupe
+        ArrayList<Guerrier> listeGuerriersAdverses = new ArrayList<>() ;
+        Guerrier guerrier8 = new Elfe() ;      listeGuerriersAdverses.add(guerrier8) ;
+        Guerrier guerrier9 = new Nain() ;      listeGuerriersAdverses.add(guerrier9) ;
+        Guerrier guerrier10 = new ChefNain() ; listeGuerriersAdverses.add(guerrier10) ;
+        Guerrier guerrier11 = new ChefElfe() ; listeGuerriersAdverses.add(guerrier11) ;
+        Guerrier guerrier12 = new ChefElfe() ; listeGuerriersAdverses.add(guerrier12) ;
+          // Deuxième groupe
+        ArrayList<Guerrier> listeGuerriersAdversesSuppl = new ArrayList<>() ;
+        Guerrier guerrier13 = new Elfe() ;     listeGuerriersAdversesSuppl.add(guerrier13) ;
+        Guerrier guerrier14 = new Nain() ;     listeGuerriersAdversesSuppl.add(guerrier14) ;
 
-        // Tests pour la première version du déplacement (guerriers bleus)
-/*
+
+        //------------------------------------------- Tests de déplacement -------------------------------------------//
         int tourDeJeu = 1 ;
+        ArrayList<Guerrier> guerriersBleus = new ArrayList<>(), guerriersRouges = new ArrayList<>() ;
         boolean dernierCarreauVide = plateauDeJeu.getCarreaux().get(nbCarreauxTest-1).getGuerriersBleus().isEmpty() ;
-        while (dernierCarreauVide) {
+        while (tourDeJeu<2*nbCarreauxTest && dernierCarreauVide) {
             LOGGER.log(Level.INFO, "Tour de jeu n°" + tourDeJeu + ". Etat des carreaux :") ;
-            if (tourDeJeu == 3) {
-                listeGuerriers = listeGuerriersSuppl ;
+            switch (tourDeJeu) {
+                case 1 :
+                    guerriersBleus = listeGuerriers ;
+                    break ;
+                case 2 :
+                    guerriersRouges = listeGuerriersAdverses ;
+                    break ;
+                case 5 :
+                    guerriersBleus = listeGuerriersSuppl ;
+                    break ;
+                case 8 :
+                    guerriersRouges = listeGuerriersAdversesSuppl ;
+                    break ;
             }
-            plateauDeJeu.deplaceGuerriers(listeGuerriers) ;
+            plateauDeJeu.deplaceGuerriers(guerriersBleus, guerriersRouges) ;
             tourDeJeu++ ;
             dernierCarreauVide = plateauDeJeu.getCarreaux().get(nbCarreauxTest-1).getGuerriersBleus().isEmpty() ;
-        }
-*/
-
-        // Tests pour la deuxième version du déplacement (guerriers rouges)
-        int tourDeJeu = 1 ;
-        boolean premierCarreauVide = plateauDeJeu.getCarreaux().get(0).getGuerriersRouges().isEmpty() ;
-        while (premierCarreauVide) {
-            LOGGER.log(Level.INFO, "Tour de jeu n°" + tourDeJeu + ". Etat des carreaux :") ;
-            if (tourDeJeu == 3) {
-                listeGuerriers = listeGuerriersSuppl ;
-            }
-            plateauDeJeu.deplaceGuerriers(listeGuerriers) ;
-
-            premierCarreauVide = plateauDeJeu.getCarreaux().get(0).getGuerriersRouges().isEmpty() ;
-            tourDeJeu++ ;
         }
     }
 }
