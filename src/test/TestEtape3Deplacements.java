@@ -56,25 +56,16 @@ public class TestEtape3Deplacements {
 
         //------------------------------------------- Tests de déplacement -------------------------------------------//
         int tourDeJeu = 1 ;
-        ArrayList<Guerrier> guerriersBleus = new ArrayList<>(), guerriersRouges = new ArrayList<>() ;
         boolean dernierCarreauVide = plateauDeJeu.getCarreaux().get(nbCarreauxTest-1).getGuerriersBleus().isEmpty() ;
         while (tourDeJeu<2*nbCarreauxTest && dernierCarreauVide) {
             LOGGER.log(Level.INFO, "Tour de jeu n°" + tourDeJeu + ". Etat des carreaux :") ;
             switch (tourDeJeu) {
-                case 1 :
-                    guerriersBleus = listeGuerriers ;
-                    break ;
-                case 2 :
-                    guerriersRouges = listeGuerriersAdverses ;
-                    break ;
-                case 5 :
-                    guerriersBleus = listeGuerriersSuppl ;
-                    break ;
-                case 8 :
-                    guerriersRouges = listeGuerriersAdversesSuppl ;
-                    break ;
+                case 1 -> plateauDeJeu.ajoutGuerriersEnAttente(Couleur.BLEU, listeGuerriers) ;
+                case 2 -> plateauDeJeu.ajoutGuerriersEnAttente(Couleur.ROUGE, listeGuerriersAdverses) ;
+                case 5 -> plateauDeJeu.ajoutGuerriersEnAttente(Couleur.BLEU, listeGuerriersSuppl) ;
+                case 8 -> plateauDeJeu.ajoutGuerriersEnAttente(Couleur.ROUGE, listeGuerriersAdversesSuppl) ;
             }
-            plateauDeJeu.deplaceGuerriers(guerriersBleus, guerriersRouges) ;
+            plateauDeJeu.deplaceGuerriers() ;
             tourDeJeu++ ;
             dernierCarreauVide = plateauDeJeu.getCarreaux().get(nbCarreauxTest-1).getGuerriersBleus().isEmpty() ;
         }

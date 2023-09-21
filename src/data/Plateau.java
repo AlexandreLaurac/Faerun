@@ -8,7 +8,7 @@ import java.util.logging.Logger ;
 public class Plateau {
 
     // Constantes
-    public static final int NB_CARREAUX = 5 ;
+    public static final int NB_CARREAUX_DEFAUT = 5 ;
 
     // Logger et configuration
     private static Logger LOGGER = Logger.getLogger(Plateau.class.getPackageName()) ;
@@ -19,19 +19,25 @@ public class Plateau {
 
     // Attributs
     int nbCarreaux ;
+    int numCarreauCombat ;
     private ArrayList<Carreau> carreaux ;
+    private ArrayList<Guerrier> guerriersBleusEnAttente, guerriersRougeEnAttente ;
 
     // Constructeurs
     public Plateau() {
-        nbCarreaux = NB_CARREAUX ;
-        carreaux = new ArrayList<Carreau> (NB_CARREAUX) ;
+        nbCarreaux = NB_CARREAUX_DEFAUT ;
+        carreaux = new ArrayList<>(NB_CARREAUX_DEFAUT) ;
+        setNumCarreauCombat(-1) ;
         instanciationCarreaux() ;
+        instanciationGuerriersEnAttente() ;
     }
 
     public Plateau (int longueur) {
         nbCarreaux = longueur ;
-        carreaux = new ArrayList<Carreau> (longueur) ;
+        carreaux = new ArrayList<>(longueur) ;
+        setNumCarreauCombat(-1) ;
         instanciationCarreaux() ;
+        instanciationGuerriersEnAttente() ;
     }
 
     private void instanciationCarreaux () {
@@ -40,37 +46,39 @@ public class Plateau {
         }
     }
 
+    private void instanciationGuerriersEnAttente() {
+        guerriersBleusEnAttente = new ArrayList<>() ;
+        guerriersRougeEnAttente = new ArrayList<>() ;
+    }
+
+    // Setters
+    public void setNumCarreauCombat (int numCarreauCombat) {
+        this.numCarreauCombat = numCarreauCombat ;
+    }
+
     // Getters
     public int getNbCarreaux() {
         return nbCarreaux ;
-    }
-
-    public Couleur getGagnant() {
-        return Couleur.BLEU ; // TEMPORAIRE
     }
 
     public ArrayList<Carreau> getCarreaux() {
         return carreaux ;
     }
 
-    private Carreau getDepartBleu() {
-        return new Carreau() ; // TEMPORAIRE
-    }
-
-    private Carreau getDepartRouge() {
-        return new Carreau() ; // TEMPORAIRE
-    }
-
     // Méthodes concernant le déplacement des joueurs
-    public void ajoutGuerriers (Chateau chateau, ArrayList<Guerrier> guerriers) {
-
+    public void ajoutGuerriersEnAttente (Couleur couleur, ArrayList<Guerrier> guerriers) {
+        if (couleur == Couleur.BLEU) {
+            guerriersBleusEnAttente = guerriers ;
+        } else if (couleur == Couleur.ROUGE) {
+            guerriersRougeEnAttente = guerriers ;
+        }
     }
 
-    public void deplaceGuerriers (ArrayList<Guerrier> listeGuerriersEntrainesBleus, ArrayList<Guerrier> listeGuerriersEntrainesRouges) { // présence de l'argument à revoir : utiliser plutôt la méthode ajoutGuerriers avec emploi éventuel d'attributs supplémentaires
+    public void deplaceGuerriers () {
 
         //------------------------------------------ Déplacement des Bleus -------------------------------------------//
 
-        ArrayList<Guerrier> listeAttenteEntree = listeGuerriersEntrainesBleus ;
+        ArrayList<Guerrier> listeAttenteEntree = guerriersBleusEnAttente ;
         ArrayList<Guerrier> listeAttenteSortie = new ArrayList<>() ;
 
         // Traitement des carreaux sans Rouges
@@ -106,8 +114,8 @@ public class Plateau {
             i++ ;
         }
 
-        // Traitement du dernier carreau
-        if (i<nbCarreaux) {  // on est sorti de la boucle parce qu'on a rencontré des guerriers rouges - à vrai dire dans le jeu c'est toujours le cas
+        // Traitement éventuel du carreau avec Rouges
+        if (i<nbCarreaux) {  // on est sorti de la boucle parce qu'on a rencontré des guerriers rouges dans le parcours du plateau
             // S'il existe des guerriers en attente pour entrer sur le carreau, on les ajoute aux guerriers bleus déjà présents sans mettre ces derniers en attente de sortie
             if (!listeAttenteEntree.isEmpty()) {
                 carreaux.get(i).getGuerriersBleus().addAll(listeAttenteEntree) ;
@@ -153,13 +161,13 @@ public class Plateau {
         }
 
         // Traitement du dernier carreau
-        if (!listeGuerriersEntrainesRouges.isEmpty()) {
+        if (!guerriersRougeEnAttente.isEmpty()) {
 
             // Initialisations
             carreauCourant = carreaux.get(nbCarreaux-1) ;
             guerriersRougeCourant = carreauCourant.getGuerriersRouges() ;
-            guerriersRougeCourant.addAll(listeGuerriersEntrainesRouges) ;
-            listeGuerriersEntrainesRouges.clear() ;  // pas très propre...
+            guerriersRougeCourant.addAll(guerriersRougeEnAttente) ;
+            guerriersRougeEnAttente.clear() ;  // pas très propre...
 
             // Affichage de l'état du carreau en fin de déplacement le concernant
             if (!guerriersRougeCourant.isEmpty()) {
@@ -168,13 +176,50 @@ public class Plateau {
         }
     }
 
-
     // Méthodes concernant le combat
     public void lanceCombats() {
+        int i = 0 ;
+        while (i < nbCarreaux && !(!carreaux.get(i).getGuerriersBleus().isEmpty() && !carreaux.get(i).getGuerriersRouges().isEmpty())) {
+            i++ ;
+        }
+        if (i < nbCarreaux) {
+            LOGGER.log(Level.INFO, "Lancement d'un combat dans le carreau " + i + " !") ;
+            carreaux.get(i).lanceCombat() ;
+        }
+    }
 
+    // Méthodes concernant la fin du jeu
+    public boolean guerriersBleusArrives() {
+        return !carreaux.get(nbCarreaux-1).getGuerriersBleus().isEmpty() ;
+    }
+
+    public boolean guerriersRougesArrives() {
+        return !carreaux.get(0).getGuerriersRouges().isEmpty() ;
     }
 
     public boolean estPartieTerminee() {
-        return false ; // TEMPORAIRE
+        return guerriersBleusArrives() || guerriersRougesArrives() ;
+    }
+
+    public Couleur getGagnant() {
+        Couleur couleur ;
+        if (guerriersBleusArrives()) {
+            couleur = Couleur.BLEU ;
+        } else if (guerriersRougesArrives()) {
+            couleur = Couleur.ROUGE ;
+        } else {
+            couleur = Couleur.AUCUN ;
+        }
+        return couleur ;
+    }
+
+    public void afficheGagnant() {
+        String couleurChateauGagnant = "" ;
+        if (getGagnant() == Couleur.BLEU) {
+            couleurChateauGagnant = "bleu" ;
+        } else if (getGagnant() == Couleur.ROUGE) {
+            couleurChateauGagnant = "rouge" ;
+        }
+        LOGGER.log(Level.INFO, "Le chateau " + couleurChateauGagnant + " a gagné !!!") ;
     }
 }

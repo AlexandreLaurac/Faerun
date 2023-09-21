@@ -26,11 +26,11 @@ public class Chateau {
     private ArrayList<Guerrier> guerriersNovices ;
 
     // Constructeur
-    public Chateau (Couleur couleur, Plateau plateau) {  // A VERIFIER POUR LE PLATEAU
+    public Chateau (Couleur couleur, Plateau plateau) {
         ressources = RESSOURCES_INITIALES ;
         this.couleur = couleur ;
         this.plateau = plateau ;
-        guerriersNovices = new ArrayList<> () ;
+        guerriersNovices = new ArrayList<>() ;
     }
 
     // Méthode d'ajout d'un guerrier novice à la liste de guerriers
@@ -65,9 +65,9 @@ public class Chateau {
     }
 
     // Méthode d'entrainement des guerriers
-    public ArrayList<Guerrier> entrainer() {
+    public void entrainer() {
 
-        LOGGER.log(Level.INFO, "Nombre de guerriers restant à entrainer : " + guerriersNovices.size() + ", ressources disponibles : " + ressources) ;
+        LOGGER.log(Level.INFO, "Nombre de guerriers à entrainer : " + guerriersNovices.size() + ", ressources disponibles : " + ressources) ;
 
         ArrayList<Guerrier> guerriersEntraines = new ArrayList<>() ;
         int numGuerrierCourant = 0 ;
@@ -91,8 +91,9 @@ public class Chateau {
             LOGGER.log(Level.INFO, "Entrainement du guerrier " + numGuerrierCourant + ", ressources prises : " + coutGuerrierCourant) ;
         }
 
+        // Fin d'entrainement
         LOGGER.log(Level.INFO, "Nombre de guerriers entrainés : " + numGuerrierCourant + ", ressources restantes : " + ressources) ;
-        incrementerRessources() ;
-        return guerriersEntraines ;
+        incrementerRessources() ;  // incrémentation des ressources du chateau
+        plateau.ajoutGuerriersEnAttente(couleur, guerriersEntraines) ;  // on met les guerriers entrainés sur le plateau (en attente)
     }
 }
